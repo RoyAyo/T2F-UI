@@ -1,5 +1,6 @@
 import React, { useState, useEffect, useRef } from "react";
-import { Send, Play, Pause, Volume2 } from "lucide-react";
+import { Send, Play, Pause, Volume2, Wind } from "lucide-react";
+import { Link } from 'react-router-dom';
 
 interface Message {
   type: "text" | "audio";
@@ -21,12 +22,12 @@ const AudioMessage = ({
   <div className="flex items-center space-x-3 bg-white/90 backdrop-blur-sm p-3 rounded-xl shadow-sm">
     <button
       onClick={onToggle}
-      className="h-10 w-10 flex items-center justify-center rounded-full bg-indigo-100 hover:bg-indigo-200 transition-colors"
+      className="h-10 w-10 flex items-center justify-center rounded-full bg-purple-100 hover:bg-purple-200 transition-colors"
     >
       {isPlaying ? (
-        <Pause size={18} className="text-indigo-700" />
+        <Pause size={18} className="text-purple-700" />
       ) : (
-        <Play size={18} className="text-indigo-700 ml-1" />
+        <Play size={18} className="text-purple-700 ml-1" />
       )}
     </button>
     <div className="flex flex-col">
@@ -35,7 +36,7 @@ const AudioMessage = ({
         <Volume2 size={14} className="text-gray-400" />
         <div className="h-1 w-32 bg-gray-200 rounded-full">
           <div 
-            className="h-full bg-indigo-500 rounded-full transition-all duration-300"
+            className="h-full bg-purple-500 rounded-full transition-all duration-300"
             style={{ width: isPlaying ? "100%" : "0%" }}
           />
         </div>
@@ -108,9 +109,13 @@ export default function Chatbot() {
     <div className="flex flex-col h-screen bg-gradient-to-br from-gray-50 to-gray-100 rounded-lg shadow-lg overflow-hidden">
       <header className="px-6 py-4 border-b border-gray-200 bg-white">
         <div className="flex items-center space-x-4">
-          <img src="/logo-m.png" alt="Chatbot Logo" className="h-14 w-14" />
+            <Link to="/">
+                <div className="flex justify-center">
+                    <Wind className="h-12 w-12 text-purple-500 animate-bounce" />
+                </div>
+            </Link>
           <div>
-            <h1 className="text-xl font-semibold text-gray-900">Fartbot</h1>
+            <h1 className="text-2xl font-semibold text-gray-800">Text2Fart 💨</h1>
             <p className="text-sm text-gray-500">Send a text, receive your fart</p>
           </div>
         </div>
@@ -163,14 +168,14 @@ export default function Chatbot() {
       <div className="p-6 border-t border-gray-200 bg-white">
         <div className="flex items-center space-x-4">
           <input
-            className="flex-1 px-4 py-3 bg-gray-100 border-0 rounded-xl focus:ring-2 focus:ring-indigo-500 focus:outline-none transition-shadow"
+            className="flex-1 px-4 py-3 bg-gray-100 border-0 rounded-xl focus:ring-2 focus:ring-purple-500 focus:outline-none transition-shadow"
             value={input}
             onChange={(e) => setInput(e.target.value)}
             placeholder="Type your message..."
             onKeyDown={(e) => e.key === "Enter" && sendMessage()}
           />
           <button
-            className="p-3 bg-indigo-600 text-white rounded-xl hover:bg-indigo-700 transition-colors"
+            className="p-3 bg-purple-600 text-white rounded-xl hover:bg-purple-700 transition-colors"
             onClick={sendMessage}
           >
             <Send size={20} />
