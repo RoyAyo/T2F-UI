@@ -65,7 +65,21 @@ export default function Chatbot() {
   const messagesEndRef = useRef<HTMLDivElement>(null);
   const audioRef = useRef<HTMLAudioElement | null>(null);
 
-const sendMessage = () => {
+  // Set HTML and body height
+  useEffect(() => {
+    document.documentElement.style.height = '100%';
+    document.body.style.height = '100%';
+    document.body.style.margin = '0';
+    
+    // Cleanup
+    return () => {
+      document.documentElement.style.height = '';
+      document.body.style.height = '';
+      document.body.style.margin = '';
+    };
+  }, []);
+
+  const sendMessage = () => {
     if (!input.trim()) return;
     
     const newMessages: Message[] = [
@@ -92,11 +106,10 @@ const sendMessage = () => {
         }
       ]);
       setLoading(false);
-
-      return
+      return;
     }
     
-    fetch('http://localhost:8000/fart', {
+    fetch('https://api.text2fart.com/fart', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
@@ -135,7 +148,7 @@ const sendMessage = () => {
       ]);
       setLoading(false);
     });
-};
+  };
 
   const toggleAudio = (audioSrc: string, index: number) => {
     if (audioRef.current) {
@@ -164,14 +177,14 @@ const sendMessage = () => {
   }, [messages]);
 
   return (
-    <div className="flex flex-col h-screen bg-gradient-to-br from-gray-50 to-gray-100 rounded-lg shadow-lg overflow-hidden">
-      <header className="px-6 py-4 border-b border-gray-200 bg-white">
+    <div className="fixed inset-0 flex flex-col bg-gradient-to-br from-gray-50 to-gray-100">
+      <header className="flex-none px-6 py-4 border-b border-gray-200 bg-white">
         <div className="flex items-center space-x-4">
-            <Link to="/">
-                <div className="flex justify-center">
-                    <Wind className="h-12 w-12 text-purple-500 animate-bounce" />
-                </div>
-            </Link>
+          <Link to="/">
+            <div className="flex justify-center">
+              <Wind className="h-12 w-12 text-purple-500 animate-bounce" />
+            </div>
+          </Link>
           <div>
             <h1 className="text-2xl font-semibold text-gray-800">Text2Fart 💨</h1>
             <p className="text-sm text-gray-500">Send a text, receive your fart</p>
@@ -179,7 +192,7 @@ const sendMessage = () => {
         </div>
       </header>
 
-      <div className="flex-1 overflow-auto p-6 space-y-4">
+      <div className="flex-1 overflow-y-auto p-6 space-y-4">
         {messages.map((msg, index) => (
           <div
             key={index}
@@ -224,7 +237,7 @@ const sendMessage = () => {
         <div ref={messagesEndRef} />
       </div>
 
-      <div className="p-6 border-t border-gray-200 bg-white">
+      <div className="flex-none p-6 border-t border-gray-200 bg-white">
         <div className="flex items-center space-x-4">
           <input
             className="flex-1 px-4 py-3 bg-gray-100 border-0 rounded-xl focus:ring-2 focus:ring-purple-500 focus:outline-none transition-shadow"
