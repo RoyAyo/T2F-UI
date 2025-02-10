@@ -1,15 +1,20 @@
 import React, { useState } from "react";
-import { Send, Volume2, Wind } from "lucide-react";
+import { Send, Volume2, Wind, Clipboard, Github } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 
 export default function Home() {
   const [message, setMessage] = useState("");
   const navigate = useNavigate();
 
+  const address = "0x1234567890123456789012345678901234567890";
+
+  const copyToClipboard = () => {
+    navigator.clipboard.writeText(address);
+  };
+
   const handleSubmit = (e) => {
     e.preventDefault();
     if (message.trim()) {
-      // Navigate to the chat page with the initial message as a parameter
       navigate(`/chat?message=${encodeURIComponent(message)}`);
     }
   };
@@ -25,9 +30,33 @@ export default function Home() {
           <h1 className="text-4xl md:text-6xl font-bold text-purple-800 mb-4">
             Text2Fart
           </h1>
-          <p className="text-xl text-gray-600 mb-8">
+          <p className="text-xl text-gray-600 mb-5">
             Turn your boring messages into magnificent farts! 💨
           </p>
+
+          <div className="flex justify-center items-center space-x-4 mb-8">
+            <a
+              href="https://github.com/RoyAyo/T2F"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="flex items-center space-x-2 bg-gray-800 text-white px-4 py-2 rounded-lg hover:bg-gray-700 transition-colors"
+            >
+              <Github size={20} />
+              <span>GitHub</span>
+            </a>
+            <div className="bg-purple-100 flex items-center space-x-4 px-5 py-2 rounded-lg shadow-sm">
+              <span className="text-sm text-gray-600 font-mono">
+                {address.slice(0, 3)}...{address.slice(-3)}
+              </span>
+              <button 
+                onClick={copyToClipboard} 
+                className="bg-purple-500 text-white p-2 rounded-full hover:bg-purple-600 transition-colors group"
+              >
+                <Clipboard size={16} className="group-hover:scale-110 transition-transform" />
+              </button>
+            </div>
+          </div>
+
           <div className="flex justify-center gap-4 mb-8">
             <div className="flex items-center bg-purple-100 rounded-full px-4 py-2">
               <Volume2 className="text-purple-500 mr-2" />
@@ -60,7 +89,6 @@ export default function Home() {
           </div>
         </div>
 
-        {/* Features Section */}
         <div className="mt-16 grid md:grid-cols-3 gap-8 text-center">
           <div className="p-6 bg-white rounded-xl shadow-sm">
             <h3 className="text-lg font-semibold text-purple-800 mb-2">Real-time Processing</h3>

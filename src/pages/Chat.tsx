@@ -159,13 +159,6 @@ const sendMessage = () => {
     window.open(audioSrc, '_blank');
   };
 
-  // const exportAudio = (audioBlob: Blob) => {
-  //   const url = URL.createObjectURL(audioBlob);
-  //   window.open(url, '_blank');
-  //   // Optional: revoke URL after a delay to free memory
-  //   setTimeout(() => URL.revokeObjectURL(url), 100);
-  // };
-
   useEffect(() => {
     messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
   }, [messages]);
