@@ -95,13 +95,13 @@ export default function Chatbot() {
     setInput("");
     setLoading(true);
 
-    if(input.length > 10) {
+    if(input.length > 100) {
       setMessages(prevMessages => [
         ...prevMessages, 
         { 
           type: "text", 
           sender: "bot",
-          text: "Kindly keep your 💨 to 10 words max",
+          text: "Keep your 💨 to 100 characters",
           timestamp: new Date()
         }
       ]);
