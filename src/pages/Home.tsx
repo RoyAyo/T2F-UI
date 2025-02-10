@@ -6,7 +6,7 @@ export default function Home() {
   const [message, setMessage] = useState("");
   const navigate = useNavigate();
 
-  const address = "0x1234567890123456789012345678901234567890";
+  const address = "FyWN6bwQdYC5hwLN4oVGK3pKyKmHfagCzhrunusDpump";
 
   const copyToClipboard = () => {
     navigator.clipboard.writeText(address);
