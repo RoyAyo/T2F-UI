@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useRef } from "react";
-import { Send, Play, Pause, Volume2, Wind } from "lucide-react";
-import { Link } from 'react-router-dom';
+import { Send, Play, Pause, Volume2, Wind, ExternalLink } from "lucide-react";
+import { Link, useLocation } from 'react-router-dom';
 
 interface Message {
   type: "text" | "audio";
@@ -13,11 +13,13 @@ interface Message {
 const AudioMessage = ({ 
   audioSrc, 
   isPlaying, 
-  onToggle 
+  onToggle,
+  onExport
 }: { 
   audioSrc: string; 
   isPlaying: boolean; 
   onToggle: () => void;
+  onExport: () => void;
 }) => (
   <div className="flex items-center space-x-3 bg-white/90 backdrop-blur-sm p-3 rounded-xl shadow-sm">
     <button
@@ -42,18 +44,28 @@ const AudioMessage = ({
         </div>
       </div>
     </div>
+    <button
+      onClick={onExport}
+      className="h-8 w-8 flex items-center justify-center rounded-full bg-purple-100 hover:bg-purple-200 transition-colors"
+    >
+      <ExternalLink size={16} className="text-purple-700" />
+    </button>
   </div>
 );
 
 export default function Chatbot() {
+  const location = useLocation();
+  const queryParams = new URLSearchParams(location.search);
+  const initialQuery = queryParams.get('message') || '';
+
   const [messages, setMessages] = useState<Message[]>([]);
-  const [input, setInput] = useState<string>("");
+  const [input, setInput] = useState<string>(initialQuery);
   const [loading, setLoading] = useState<boolean>(false);
   const [playingAudioIndex, setPlayingAudioIndex] = useState<number | null>(null);
   const messagesEndRef = useRef<HTMLDivElement>(null);
   const audioRef = useRef<HTMLAudioElement | null>(null);
 
-  const sendMessage = () => {
+const sendMessage = () => {
     if (!input.trim()) return;
     
     const newMessages: Message[] = [
@@ -68,20 +80,62 @@ export default function Chatbot() {
     setMessages(newMessages);
     setInput("");
     setLoading(true);
-    
-    setTimeout(() => {
-      setMessages([
-        ...newMessages, 
+
+    if(input.length > 10) {
+      setMessages(prevMessages => [
+        ...prevMessages, 
         { 
-          type: "audio", 
-          sender: "bot", 
-          audioSrc: "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3",
+          type: "text", 
+          sender: "bot",
+          text: "Kindly keep your 💨 to 10 words max",
           timestamp: new Date()
         }
       ]);
       setLoading(false);
-    }, 1000);
-  };
+
+      return
+    }
+    
+    fetch('http://localhost:8000/fart', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({ text: input })
+    })
+    .then(response => {
+      if (!response.ok) {
+        return response.text().then(errorText => {
+          throw new Error(errorText || 'Bot unavailable');
+        });
+      }
+      return response.blob();
+    })
+    .then(audioBlob => {
+      setMessages(prevMessages => [
+        ...prevMessages, 
+        { 
+          type: "audio", 
+          sender: "bot", 
+          audioSrc: URL.createObjectURL(audioBlob),
+          timestamp: new Date()
+        }
+      ]);
+      setLoading(false);
+    })
+    .catch(error => {
+      setMessages(prevMessages => [
+        ...prevMessages, 
+        { 
+          type: "text", 
+          sender: "bot",
+          text: "💨 Unable to convert Fart",
+          timestamp: new Date()
+        }
+      ]);
+      setLoading(false);
+    });
+};
 
   const toggleAudio = (audioSrc: string, index: number) => {
     if (audioRef.current) {
@@ -100,6 +154,17 @@ export default function Chatbot() {
     setPlayingAudioIndex(index);
     audio.onended = () => setPlayingAudioIndex(null);
   };
+
+  const exportAudio = (audioSrc: string) => {
+    window.open(audioSrc, '_blank');
+  };
+
+  // const exportAudio = (audioBlob: Blob) => {
+  //   const url = URL.createObjectURL(audioBlob);
+  //   window.open(url, '_blank');
+  //   // Optional: revoke URL after a delay to free memory
+  //   setTimeout(() => URL.revokeObjectURL(url), 100);
+  // };
 
   useEffect(() => {
     messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
@@ -146,6 +211,7 @@ export default function Chatbot() {
                   audioSrc={msg.audioSrc!}
                   isPlaying={playingAudioIndex === index}
                   onToggle={() => toggleAudio(msg.audioSrc!, index)}
+                  onExport={() => exportAudio(msg.audioSrc!)}
                 />
               )}
             </div>
