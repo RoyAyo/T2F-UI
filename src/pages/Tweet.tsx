@@ -1,5 +1,5 @@
 import React, { useState, useRef, useEffect } from "react";
-import { Play, Pause, Download, Share2, Copy, Check } from "lucide-react";
+import { Play, Pause, Download, Share2, Copy, Check, Github } from "lucide-react";
 
 export default function SimpleTweetToFart() {
   const [status, setStatus] = useState<string>("");
@@ -209,11 +209,20 @@ export default function SimpleTweetToFart() {
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-gray-800 to-gray-900 flex flex-col items-center justify-center p-4 relative overflow-hidden">
+      <a
+        href="https://github.com/RoyAyo/T2F"
+        target="_blank"
+        rel="noopener noreferrer"
+        className="absolute top-4 left-4 z-20 flex items-center gap-2 bg-gray-800/90 backdrop-blur-sm px-3 py-2 rounded-lg border border-gray-700 hover:bg-gray-700 transition-colors"
+      >
+        <Github className="w-5 h-5 text-gray-400" />
+        <span className="text-gray-400 text-sm">GitHub</span>
+      </a>
+
       <div className="absolute top-4 right-4 z-20">
         <div className="flex items-center gap-2 bg-gray-800/90 backdrop-blur-sm px-3 py-2 rounded-lg border border-gray-700">
           <span className="text-gray-400 text-sm font-mono">
-          CA:
-            {/* {`${CONTRACT_ADDRESS.slice(0, 6)}...${CONTRACT_ADDRESS.slice(-4)}`} */}
+            CA:
             {` n/a`}
           </span>
           <button
