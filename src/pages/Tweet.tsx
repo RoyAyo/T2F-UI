@@ -241,7 +241,7 @@ export default function SimpleTweetToFart() {
           <h1 className="text-6xl font-bold mb-3 bg-gradient-to-r from-gray-900 via-gray-950 to-gray-950 bg-clip-text text-transparent">
             FartifyTweetAI 💨
           </h1>
-          <p className="text-lg text-gray-400">Paste a tweet url, its fart</p>
+          <p className="text-lg text-gray-400">Most tweets are just farts in disguise 💨🐦</p>
         </div>
 
         {loading && status && (
