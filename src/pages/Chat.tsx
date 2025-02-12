@@ -186,7 +186,7 @@ export default function Chatbot() {
             </div>
           </Link>
           <div>
-            <h1 className="text-2xl font-semibold text-gray-800">Text2Fart 💨</h1>
+            <h1 className="text-2xl font-semibold text-gray-800">F 💨</h1>
             <p className="text-sm text-gray-500">Send a text, receive your fart</p>
           </div>
         </div>
