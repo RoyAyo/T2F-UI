@@ -86,6 +86,20 @@ export default function SimpleTweetToFart() {
     }
   };
 
+  const extractUsername = (url) => {
+    try {
+      if (!url.startsWith("http")) {
+            url = "https://" + url;
+        }
+        let pathname = new URL(url).pathname;
+        let parts = pathname.split('/');
+        return parts[1];
+    } catch (error) {
+          console.error("Invalid URL:", error);
+          return "fart";
+    }
+  }
+
   const processTweet = async (tweetUrl?: string) => {
     const urlToProcess = tweetUrl || input;
     const validationError = validateTwitterUrl(urlToProcess);
@@ -158,7 +172,7 @@ export default function SimpleTweetToFart() {
     if (audioSrc) {
       const link = document.createElement('a');
       link.href = audioSrc;
-      link.download = 'tweet-fart.mp3';
+      link.download = `${extractUsername(previousTweet)}_fart.mp3`;
       document.body.appendChild(link);
       link.click();
       document.body.removeChild(link);
