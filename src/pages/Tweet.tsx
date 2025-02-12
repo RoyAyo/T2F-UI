@@ -166,7 +166,7 @@ export default function SimpleTweetToFart() {
   };
 
   const handleShare = () => {
-    const tweetText = `Check out the bowl of farts 💨 💨 💨  you tweeted via FartTweet: https://fartifytweet.fun?tweet_url=${previousTweet}`;
+    const tweetText = `Check out the bowl of farts 💨 💨 💨  you tweeted via FartifyTweet: https://fartifytweet.fun?tweet_url=${previousTweet}`;
     const tweetUrl = `https://twitter.com/intent/tweet?text=${encodeURIComponent(tweetText)}&in_reply_to=${tweetId}`;
     window.open(tweetUrl, '_blank');
   };
