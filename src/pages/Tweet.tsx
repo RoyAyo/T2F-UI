@@ -42,7 +42,7 @@ export default function SimpleTweetToFart() {
     return "";
   };
 
-  const CONTRACT_ADDRESS = "n/a";
+  const CONTRACT_ADDRESS = "6w33c2Z1DNwCd6qTgE7sD9ubAZLLkkNyGyPxzQD3pump";
 
   const handleCopy = async () => {
     try {
@@ -223,7 +223,7 @@ export default function SimpleTweetToFart() {
         <div className="flex items-center gap-2 bg-gray-800/90 backdrop-blur-sm px-3 py-2 rounded-lg border border-gray-700">
           <span className="text-gray-400 text-sm font-mono">
             CA:
-            {` n/a`}
+            {`${CONTRACT_ADDRESS.slice(0,3)}`}...{`${CONTRACT_ADDRESS.slice(-4)}`}
           </span>
           <button
             onClick={handleCopy}
